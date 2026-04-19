@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Create Blog Post - My Website{% endblock %}
+
+{% block content %}
+<!-- Blog Form Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="fw-bold mb-4 text-center" style="color: var(--primary-burgundy);">Create a New Blog Post</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <!-- Title -->
+                    <div class="mb-3">
+                        <label for="title" class="form-label fw-semibold" style="color: var(--secondary-burgundy);">Post Title</label>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="Enter blog title" required>
+                    </div>
+
+                    <!-- Author -->
+                    <div class="mb-3">
+                        <label for="author" class="form-label fw-semibold" style="color: var(--secondary-burgundy);">Author</label>
+                        <input type="text" class="form-control" id="author" name="author" placeholder="Enter author name" required>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="mb-3">
+                        <label for="date" class="form-label fw-semibold" style="color: var(--secondary-burgundy);">Date</label>
+                        <input type="date" class="form-control" id="date" name="date" required>
+                    </div>
+
+                    <!-- Short Description -->
+                    <div class="mb-3">
+                        <label for="description" class="form-label fw-semibold" style="color: var(--secondary-burgundy);">Short Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter a short summary..." required></textarea>
+                    </div>
+
+                    <!-- Full Content -->
+                    <div class="mb-3">
+                        <label for="content" class="form-label fw-semibold" style="color: var(--secondary-burgundy);">Full Content</label>
+                        <textarea class="form-control" id="content" name="content" rows="6" placeholder="Write your blog content here..." required></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">Publish Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

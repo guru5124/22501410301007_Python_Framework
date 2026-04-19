@@ -1,0 +1,8 @@
+<form method="POST">
+    {% csrf_token %}
+    Title: <input type="text" name="title"><br>
+    Slug: <input type="text" name="slug"><br>
+    Content: <textarea name="content"></textarea><br>
+    Author: <input type="text" name="author"><br>
+    <button type="submit">Save</button>
+</form>

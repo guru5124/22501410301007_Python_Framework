@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <style>
+        .error {
+            color: red;
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        input {
+            padding: 6px;
+            margin: 5px 0;
+            width: 250px;
+        }
+
+        button {
+            padding: 6px 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<h2>Registration Form</h2>
+<form method="post">
+    {% csrf_token %}
+
+    <p>
+        {{ form.as_p }}
+    </p>
+
+   
+    {% for field in form %}
+        <div>
+            {% if field.errors %}
+                <div class="error">
+                    {{ field.label }}: {{ field.errors }}
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    {% if form.non_field_errors %}
+        <div class="error">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+
+    <button type="submit">Register</button>
+</form>
+
+{% if msg %}
+    <p style="color:green;">{{ msg }}</p>
+{% endif %}
+
+</body>
+</html>

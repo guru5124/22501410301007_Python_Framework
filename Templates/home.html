@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}MiniBlog | Home{% endblock %}
+{% block content %}
+<div class="page-body">
+    <section class="section">
+        <div class="hero-mini">
+            <h1 class="hero-title">{{ msg|default:"Harshil Jadav" }}</h1>
+            <p class="hero-text">
+                A place to learn development, share ideas, and grow your coding skills.
+            </p>
+
+            <a href="{% url 'post' %}" class="btn btn-teal">
+                Explore Blog
+            </a>
+        </div>
+    </section>
+
+</div>
+
+{% endblock %}

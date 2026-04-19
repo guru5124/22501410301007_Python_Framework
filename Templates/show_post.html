@@ -1,0 +1,9 @@
+<h2>All Posts</h2>
+
+{% for post in posts %}
+    <p>{{ post.title }} - {{ post.author }}</p>
+    <a href="{% url 'update_post' post.id %}">Edit</a>
+    <a href="{% url 'delete_post' post.id %}">Delete</a>
+{% endfor %}
+
+<a href="{% url 'create_post' %}">Add New</a>

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Blog Categories - My Website{% endblock %}
+
+{% block content %}
+<!-- Categories Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="fw-bold mb-4 text-center" style="color: var(--primary-burgundy);">Blog Categories</h2>
+        <div class="row g-4 justify-content-center">
+
+            <!-- Technology -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold" style="color: var(--secondary-burgundy);">Technology</h5>
+                        <p class="card-text">Posts related to technology and programming.</p>
+                        <a href="#" class="btn btn-primary">View Posts</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Education -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold" style="color: var(--secondary-burgundy);">Education</h5>
+                        <p class="card-text">Articles about education and learning.</p>
+                        <a href="#" class="btn btn-primary">View Posts</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Research -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold" style="color: var(--secondary-burgundy);">Research</h5>
+                        <p class="card-text">Research-oriented blog posts.</p>
+                        <a href="#" class="btn btn-primary">View Posts</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}
