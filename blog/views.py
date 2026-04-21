@@ -1,6 +1,5 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from datetime import datetime
-
 from django.core.mail import send_mail
 from django.conf import settings
 
@@ -8,22 +7,21 @@ from .forms import (
     LoginForm,
     ContactUsForm,
     RegistrationForm,
-    PostForm,          
-    CategoryForm      
+    PostForm,
+    CategoryForm
 )
 
-from .models import ContactUs
+from .models import ContactUs, Category, Post
 
-# BASIC VIEWS
 
+# ================= BASIC VIEWS =================
 
 def demo(request):
     return HttpResponse("Welcome to Django Framework")
 
 
 def cur_date(request):
-    time = datetime.now()
-    return HttpResponse(f"Current Date & Time: {time}")
+    return HttpResponse(f"Current Date & Time: {datetime.now()}")
 
 
 def path_converter(request, n):
@@ -56,7 +54,8 @@ def post_details(request):
 def base(request):
     return render(request, "base.html")
 
-# CONTACT FORM
+
+# ================= CONTACT =================
 
 def contact(request):
     form = ContactUsForm()
@@ -72,7 +71,8 @@ def contact(request):
 
     return render(request, "contact.html", {"form": form})
 
-# EMAIL
+
+# ================= EMAIL =================
 
 def send_test_email(request):
     send_mail(
@@ -84,7 +84,8 @@ def send_test_email(request):
     )
     return HttpResponse("Email sent (check console).")
 
-# LOGIN
+
+# ================= LOGIN =================
 
 def login_view(request):
     form = LoginForm()
@@ -92,12 +93,15 @@ def login_view(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
-            return render(request, 'login.html', {'msg': "Login Success", 'form': form})
+            return render(request, 'login.html', {
+                'msg': "Login Success",
+                'form': form
+            })
 
     return render(request, 'login.html', {'form': form})
 
-# REGISTRATION
 
+# ================= REGISTRATION =================
 
 def register(request):
     form = RegistrationForm()
@@ -112,7 +116,8 @@ def register(request):
 
     return render(request, "register.html", {"form": form})
 
-# POST FORM 
+
+# ================= POST FORM =================
 
 def post_view(request):
     form = PostForm()
@@ -128,71 +133,80 @@ def post_view(request):
 
     return render(request, "post.html", {"form": form})
 
-# CATEGORY FORM 
+
+# ================= CATEGORY =================
 
 def category_view(request):
     form = CategoryForm()
+    result = ""
 
     if request.method == "POST":
         form = CategoryForm(request.POST)
         if form.is_valid():
             form.save()
-            return render(request, "category.html", {
-                "form": CategoryForm(),
-                "msg": "Category Saved Successfully"
-            })
+            result = "Category Saved Successfully"
+            form = CategoryForm()
 
-    return render(request, "category.html", {"form": form})
+    data = Category.objects.all()
 
-# is_valid()
-def register(request):
-    form = RegistrationForm()
+    return render(request, "category.html", {
+        "form": form,
+        "data": data,
+        "result": result
+    })
+
+
+# EDIT CATEGORY
+def edit_category(request, id):
+    category = get_object_or_404(Category, id=id)
 
     if request.method == "POST":
-        form = RegistrationForm(request.POST)
-
+        form = CategoryForm(request.POST, instance=category)
         if form.is_valid():
-            return render(request, "register.html", {"msg": "Registration Successful"})
-        else:
-            print(form.errors)   
+            form.save()
+            return redirect('category')
 
-    return render(request, "register.html", {"form": form})
+    form = CategoryForm(instance=category)
+    data = Category.objects.all()
 
-# Program 17
-from django.shortcuts import render
+    return render(request, "category.html", {
+        "form": form,
+        "data": data
+    })
 
-def home(request):
-    return render(request, 'home.html')
 
-# program 21
-#CREATE (Insert Data)
-from django.shortcuts import render, redirect
-from .models import Post
+# DELETE CATEGORY
+def delete_category(request, id):
+    category = get_object_or_404(Category, id=id)
+    category.delete()
+    return redirect('category')
 
+
+# ================= POST CRUD =================
+
+# CREATE
 def create_post(request):
     if request.method == "POST":
-        title = request.POST.get('title')
-        slug = request.POST.get('slug')
-        content = request.POST.get('content')
-        author = request.POST.get('author')
-
         Post.objects.create(
-            title=title,
-            slug=slug,
-            content=content,
-            author=author
+            title=request.POST.get('title'),
+            slug=request.POST.get('slug'),
+            content=request.POST.get('content'),
+            author=request.POST.get('author')
         )
         return redirect('show_post')
 
     return render(request, 'create_post.html')
 
-#READ (Display Data)
+
+# READ
 def show_post(request):
     posts = Post.objects.all()
     return render(request, 'show_post.html', {'posts': posts})
-#UPDATE (Edit Data)
+
+
+# UPDATE
 def update_post(request, id):
-    post = Post.objects.get(id=id)
+    post = get_object_or_404(Post, id=id)
 
     if request.method == "POST":
         post.title = request.POST.get('title')
@@ -203,8 +217,10 @@ def update_post(request, id):
         return redirect('show_post')
 
     return render(request, 'update_post.html', {'post': post})
-#DELETE (Remove Data)
+
+
+# DELETE
 def delete_post(request, id):
-    post = Post.objects.get(id=id)
+    post = get_object_or_404(Post, id=id)
     post.delete()
     return redirect('show_post')

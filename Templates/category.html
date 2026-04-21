@@ -1,48 +1,102 @@
-{% extends "base.html" %}
-
-{% block title %}Blog Categories - My Website{% endblock %}
-
+{% extends 'base.html' %}
 {% block content %}
-<!-- Categories Section -->
-<section class="py-5">
-    <div class="container">
-        <h2 class="fw-bold mb-4 text-center" style="color: var(--primary-burgundy);">Blog Categories</h2>
-        <div class="row g-4 justify-content-center">
+<h2>Create Category</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" class="btn-submit">
+</form>
+<p class="result-msg">{{ result }}</p>
+<hr>
+<h2>Category List</h2>
+<table class="category-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in data %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.description }}</td>
+            <td>
+                <a href="{% url 'edit_category' item.id %}" class="btn-edit">Edit</a>
+                <a href="{% url 'delete_category' item.id %}" class="btn-delete">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<style>
 
-            <!-- Technology -->
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm border-0">
-                    <div class="card-body text-center">
-                        <h5 class="card-title fw-bold" style="color: var(--secondary-burgundy);">Technology</h5>
-                        <p class="card-text">Posts related to technology and programming.</p>
-                        <a href="#" class="btn btn-primary">View Posts</a>
-                    </div>
-                </div>
-            </div>
+.category-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-family: Arial, sans-serif;
+}
 
-            <!-- Education -->
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm border-0">
-                    <div class="card-body text-center">
-                        <h5 class="card-title fw-bold" style="color: var(--secondary-burgundy);">Education</h5>
-                        <p class="card-text">Articles about education and learning.</p>
-                        <a href="#" class="btn btn-primary">View Posts</a>
-                    </div>
-                </div>
-            </div>
+.category-table th, .category-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
 
-            <!-- Research -->
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm border-0">
-                    <div class="card-body text-center">
-                        <h5 class="card-title fw-bold" style="color: var(--secondary-burgundy);">Research</h5>
-                        <p class="card-text">Research-oriented blog posts.</p>
-                        <a href="#" class="btn btn-primary">View Posts</a>
-                    </div>
-                </div>
-            </div>
+.category-table th {
+    background-color: #4CAF50;
+    color: white;
+}
 
-        </div>
-    </div>
-</section>
+.category-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.category-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Buttons */
+.btn-edit, .btn-delete {
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.btn-edit {
+    background-color: #2196F3;
+    color: white;
+}
+
+.btn-delete {
+    background-color: #f44336;
+    color: white;
+    margin-left: 5px;
+}
+
+.btn-submit {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background-color: #45a049;
+}
+
+/* Success message */
+.result-msg {
+    color: green;
+    font-weight: bold;
+    margin-top: 10px;
+}
+</style>
 {% endblock %}
